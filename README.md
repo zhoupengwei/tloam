@@ -1,5 +1,5 @@
 # T-LOAM: Truncated Least Squares Lidar-only Odometry and Mapping in Real-Time
-## Supplementary material for our IEEE Transactions on Geoscience and Remote Sensing paper
+
 **The first Lidar-only odometry framework with high performance based on truncated least squares and Open3D point cloud library, The foremost improvement include:** 
 
 * **Fast and precision pretreatment module, multi-region ground extraction and dynamic curved-voxel clustering perform ground point extraction and category segmentation.**

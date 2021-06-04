@@ -4,8 +4,8 @@
 
 * **Fast and precision pretreatment module, multi-region ground extraction and dynamic curved-voxel clustering perform ground point extraction and category segmentation.**
 * **Feature extraction based on principal component analysis(PCA) elaborate four distinctive feature，including: planar features, ground features, edge features, sphere features**
-* **There are three kinds of residual functions based on truncated least squares method for directly processing above features which are point-to-point, point-to-line, and point-to-plane. **
-* **Open3d point cloud library is integrated into SLAM algorithm framework for the first time. We extend more functions and implemented the message interface related to ROS. **
+* **There are three kinds of residual functions based on truncated least squares method for directly processing above features which are point-to-point, point-to-line, and point-to-plane.**
+* **Open3d point cloud library is integrated into SLAM algorithm framework for the first time. We extend more functions and implemented the message interface related to ROS.**
 #### [[Demo Video](https://youtu.be/YwINGyaRXVQ)] [[Preprint Paper](https://doi.org/10.1109/TGRS.2021.3083606)] 
 
 <p align='center'>

@@ -1,4 +1,4 @@
-# T-LOAM: Truncated Least Squares Lidar-only Odometry and Mapping in Real-Time
+## T-LOAM: Truncated Least Squares Lidar-only Odometry and Mapping in Real-Time
 
 **The first Lidar-only odometry framework with high performance based on truncated least squares and Open3D point cloud library, The foremost improvement include:** 
 
@@ -153,7 +153,7 @@ Thank you for citing our T-LOAM paper on [IEEE](https://ieeexplore.ieee.org/docu
 
 ## Credits
 
-We hereby recommend reading [A-LOAM](https://github.com/HKUST-Aerial-Robotics/A-LOAM) and [floam](https://github.com/wh200720041/floam) for reference and thank them for making their work public.
+We hereby recommend reading [A-LOAM](https://github.com/HKUST-Aerial-Robotics/A-LOAM) ,[floam](https://github.com/wh200720041/floam) and  [TEASER](https://github.com/MIT-SPARK/TEASER-plusplus)  for reference and thank them for making their work public.
 
 ## License
 The source code is released under [GPLv3](http://www.gnu.org/licenses/) license.

@@ -1,0 +1,27 @@
+velodyne:
+    sensorModel: 64     # 16, 32,
+    scanPeriod: 0.1     # 10HZ
+    sensorHeight: 1.73  # Lidar installation height value
+    verticalRes: 0.4    # Vertical resolution
+    initAngle: -24.9    # 64 -24.9 32/16 -15.0
+    sensorMinRange: 1.0   # Minimum detection range(m)
+    sensorMaxRange: 120.0 # Maximum detection range(m)
+    near_dis: 3.0
+
+# Regional ground segmentation parameter settings
+groundSeg: 
+    quadrant: 4    # How many quadrants are divided into
+    numSec: 3      # How many sub-areas are divided into each quadrant
+    dis: 0.3       # The distance threshold of the ground point segmentation
+    maxIter: 3
+    ground_seed_num: 20  # The number of initial seed points
+    ringMinNum: 131      # Beams smaller than this value will be filtered out
+ 
+#  DCVC segmentation param
+DCVC: 
+    startR: 0.35    # Surface voxel initial polar diameter resolution
+    deltaR: 0.0004  # Pole diameter increment
+    deltaP: 1.2     # Pitch angle increment
+    deltaA: 1.2     # Azimuth increment
+    minSeg: 80      # After splitting, how many points are at least one category, and categories smaller than this number will be filtered out
+

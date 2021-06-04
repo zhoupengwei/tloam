@@ -1,0 +1,18 @@
+LocalRegistration:
+    k_corr: 10             # The number of neighborhood points considered when calculating the covariance matrix
+    factor_num: 4          # How many factors are added to the optimization function 2~4
+    edge_dist_thres: 1.0   # Corner point feature near point search threshold
+    edge_dir_thres: 0.85   # The corner feature direction vector threshold, the larger the straight line fits, the closer to the vertical straight line
+    edge_maxnum: 1200      # How many corner features can be added to the residual function at most
+    sphere_dist_thres: 0.5  # Spherical point feature near point search threshold
+    sphere_maxnum: 200      # How many spherical point features can be added to the residual function at most
+    planar_dist_thres: 0.5  # Plane point feature near point search threshold
+    planar_maxnum: 2500     # How many vertically distributed planar features can be added to the residual function at most
+    ground_dist_thres: 0.5  # Ground point feature near point search threshold
+    ground_maxnum: 2500     # How many horizontal plane features can be added to the residual function at most
+    max_iterations: 4       # How many iterations are required at most
+    cost_threshold: 0.000000005  # Iterative convergence termination threshold
+    gnc_factor: 11.8        # Iterative convergence termination threshold
+    noise_bound: 0.01       # Upper bound of noise
+    fitness_thres: 0.02     # The coincidence matching threshold is used to calculate the matching score
+    

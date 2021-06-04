@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>tloam</name>
+  <version>0.0.0</version>
+
+  <description>
+    T-LOAM: Multiple Metrics Truncated Linear Least Square Lidar Odometry and Mapping in Real-time
+    The first laser slam framework developed based on truncated least squares and Open3D
+  </description>
+
+  <maintainer email="zpw6106@gmail.com">zpw</maintainer>
+
+  <license>GPLv3</license>
+  <author email="zpw6106@gmail.com">Pengwei Zhou</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>rosbag</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>velodyne_msgs</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>cv_bridge</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>ecl_threads</build_depend>
+  <build_depend>jsk_recognition_msgs</build_depend>
+  <build_export_depend>nav_msgs</build_export_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>geometry_msgs</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>rosbag</build_export_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
+  <build_export_depend>tf</build_export_depend>
+  <build_export_depend>velodyne_msgs</build_export_depend>
+  <build_export_depend>image_transport</build_export_depend>
+  <build_export_depend>cv_bridge</build_export_depend>
+  <build_export_depend>nodelet</build_export_depend>
+  <build_export_depend>ecl_threads</build_export_depend>
+  <build_export_depend>jsk_recognition_msgs</build_export_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>rosbag</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>velodyne_msgs</exec_depend>
+  <exec_depend>image_transport</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>nodelet</exec_depend>
+  <exec_depend>ecl_threads</exec_depend>
+  <exec_depend>jsk_recognition_msgs</exec_depend>
+
+  <export>
+    <nodelet plugin="${prefix}/plugins/tloam_nodelet_plugins.xml" />
+  </export>
+</package>

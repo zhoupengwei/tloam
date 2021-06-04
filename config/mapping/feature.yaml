@@ -1,0 +1,12 @@
+feature:
+    radius: 0.2    # Neighboring point search radius considered when calculating PCA features
+    K: 20          # The number of neighboring points during KNN search
+    min_neigh: 10  # If the surrounding points are less than this number, they will be filtered out
+    planar_num: 500
+    sphere_num: 300
+    cvr_scan: 0.25
+    cvr_submap: 0.15  
+    planar_scan_thres: 0.75
+    planar_submap_thres: 0.65  
+    planar_vertic_thres: 0.25
+    

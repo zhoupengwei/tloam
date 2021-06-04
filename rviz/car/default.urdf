@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<robot name="car">
+  <link name="base_link">
+    <visual name="base_visual">
+      <origin xyz="-0.5 0 -1.2" rpy="1.5708 0 -1.5708" />
+      <geometry>
+        <mesh filename="package://tloam/rviz/car/model.dae" scale="1.2 1.2 1.2"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

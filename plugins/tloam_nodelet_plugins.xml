@@ -1,0 +1,54 @@
+<!--这里的path="",修改成path="lib/lib{项目名}",
+    项目名就是CMakeLists.txt里面定义的project(base_nodelet)
+    我这里就是path="lib/libbase_nodelet"
+    -->
+
+<library path="lib/libkitti_reader_nodelet" >
+
+    <!-- name: launch文件里面 load 后面接着的插件名
+         type: c++文件定义的类名
+         如 name="aaa/nodeletclass1",那么，launch文件对应启动如下：
+         <node pkg="nodelet" type="nodelet" name="nodeletclass1"
+         args="load aaa/nodeletclass1 nodelet_manager" output="screen">
+    -->
+    <class name="tloam/KittiNode" type="tloam::KittiNode" base_class_type="nodelet::Nodelet">
+        <description>
+            This is kitti_reader nodelet.
+        </description>
+    </class>
+
+</library>
+
+<library path="lib/libsegmentation_nodelet" >
+
+    <!-- name: launch文件里面 load 后面接着的插件名
+         type: c++文件定义的类名
+         如 name="aaa/nodeletclass1",那么，launch文件对应启动如下：
+         <node pkg="nodelet" type="nodelet" name="nodeletclass1"
+         args="load aaa/nodeletclass1 nodelet_manager" output="screen">
+    -->
+    <class name="tloam/SegmentationNode" type="tloam::SegmentationNode" base_class_type="nodelet::Nodelet">
+        <description>
+            This is segmentation nodelet.
+        </description>
+    </class>
+
+</library>
+
+<library path="lib/liblidar_odometry_nodelet" >
+
+    <!-- name: launch文件里面 load 后面接着的插件名
+         type: c++文件定义的类名
+         如 name="aaa/nodeletclass1",那么，launch文件对应启动如下：
+         <node pkg="nodelet" type="nodelet" name="nodeletclass1"
+         args="load aaa/nodeletclass1 nodelet_manager" output="screen">
+    -->
+    <class name="tloam/LidarOdometryNode" type="tloam::LidarOdometryNode" base_class_type="nodelet::Nodelet">
+        <description>
+            This is segmentation nodelet.
+        </description>
+    </class>
+
+</library>
+
+

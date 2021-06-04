@@ -1,0 +1,8 @@
+# kitti odometry benchmark data path
+data_path: /media/zpw/SanDisk/Dataset/kitti/odometry
+# sequence number
+sequence_num: 00
+# image kind size, set 1 will read image_0, set 2 will read image_0, image_1, set 4 will read all
+image_kind_size: 4
+# publish  velodyne topic name 
+topic_name: /velodyne_points 

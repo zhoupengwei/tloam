@@ -1,0 +1,18 @@
+/**
+ * @Copyright 2020, Wuhan University of Technology
+ * @Author: Pengwei Zhou
+ * @Date: 2020/12/27 下午1:52
+ * @FileName: kitti_reader_nodelet.cpp
+ * @Description: work_space_path
+ * @License: See LICENSE for the license information
+ */
+#pragma once
+
+#include <string>
+
+namespace tloam {
+  const std::string WORK_SPACE_PATH = "@WORK_SPACE_PATH@";
+}
+
+
+

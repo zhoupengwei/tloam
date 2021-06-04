@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+    <!-- arguments -->
+    <arg name="nodelet_manager" default="tloam_nodelet_manager" />
+    <arg name="cloud_topic" default="/velodyne_points" />
+
+    <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen"/>
+
+    <!-- kitti_reader_nodelet -->
+    <node pkg="nodelet" type="nodelet" name="kitti_reader_nodelet" args="load tloam/KittiNode $(arg nodelet_manager)" output="screen"> </node>
+
+    <!-- segmentation_nodelet -->
+    <node pkg="nodelet" type="nodelet" name="segmentation_nodelet" args="load tloam/SegmentationNode $(arg nodelet_manager)" output="screen"> </node>
+
+    <!-- lidar_odometry_nodelet -->
+    <node pkg="nodelet" type="nodelet" name="lidar_odometry_nodelet" args="load tloam/LidarOdometryNode $(arg nodelet_manager)" output="screen"> </node>
+
+    <!-- Load rviz_car_model before rviz -->
+    <include file="$(find tloam)/launch/robot_car.launch">
+        <arg name="fixed_frame" value="base_link"/>
+        <!-- x y z qx qy qz qw -->
+        <arg name="transform" value="0 0 0 0 0 0 1"/>
+    </include>
+
+    <!-- rviz -->
+    <arg name="rviz" default="true" />
+    <group if="$(arg rviz)">
+        <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz" args="-d $(find tloam)/rviz/tloam.rviz" />
+    </group>
+
+</launch>
+
+
+
+
+

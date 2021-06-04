@@ -12,18 +12,20 @@
 	<img src="./doc/global_map.png" alt="drawing" width="600"/>
 </p>
 <p align='center'>
-	<img src="./doc/seg_01.gif" alt="drawing" width="230"/>
-	<img src="./doc/seg_02.gif" alt="drawing" width="230"/>
-	<img src="./doc/lidar_odometry.gif" alt="drawing" width="230"/>
-	<img src="./doc/mapping.gif" alt="drawing" width="230"/>
+	<img src="./doc/seg_01.gif" alt="drawing" width="200"/>
+	<img src="./doc/seg_02.gif" alt="drawing" width="200"/>
+	<img src="./doc/lidar_odometry.gif" alt="drawing" width="200"/>
+	<img src="./doc/mapping.gif" alt="drawing" width="200"/>
 </p>
+
 **Note that regard to pure odometry without corrections through loop closures, T-LOAM delivers much less drift than [F-LOAM.](https://github.com/wh200720041/floam)** 
 
 ## Framework overview
 
 <p align='center'>
-	<img src="./config/doc/tloam_overview.png" alt="drawing" width="1000"/>
+	<img src="./doc/tloam_overview.png" alt="drawing" width="1000"/>
 </p>
+
 Each frame of the 3D LiDAR is processed as input. Four main processing modules are introduced to construct the backbone of the algorithm: (a) multi-region ground extraction module, (b) dynamic curved-voxel clustering module, (c) feature extraction module, (d) pose optimization module. 
 
 ## Evaluation

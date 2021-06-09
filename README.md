@@ -128,7 +128,11 @@ catkin build
 ```
  ## Usage
 
-Download the [KITTI Odometry Dataset](http://www.cvlibs.net/datasets/kitti/eval_odometry.php), organize it according to the following structure, and modify the read path in the config/kitti/kitti_reader.yaml
+Download the [KITTI Odometry Dataset](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) ([Graviti](https://gas.graviti.cn/dataset/hello-dataset/KITTIOdometry) can provide faster download speed in China), then organize it according to the following structure, and modify the read path in the config/kitti/kitti_reader.yaml
+
+<p align='center'>
+	<img src="./doc/dataset_path.png" alt="drawing" width="300"/>
+</p>
 
  -Example for running T-LOAM using the KITTI Dataset
 ```

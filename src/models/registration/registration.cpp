@@ -1098,11 +1098,17 @@ bool LocalRegistration::scanMatching(Frame &out_result_, Eigen::Isometry3d& pred
     double edge_cost_diff = std::fabs(edge_cost - edge_prev_cost);
     double sphere_cost_diff = std::fabs(sphere_cost - sphere_prev_cost);
 
-    if (planar_cost_diff < cost_threshold || ground_cost_diff < cost_threshold ||
-        edge_prev_cost < cost_threshold || sphere_prev_cost < cost_threshold){
-      //ROS_INFO("The optimization has converged ahead of time");
-      break;
-    }
+//    if (planar_cost_diff < cost_threshold || ground_cost_diff < cost_threshold ||
+//        edge_prev_cost < cost_threshold || sphere_prev_cost < cost_threshold){
+//      //ROS_INFO("The optimization has converged ahead of time");
+//      break;
+//    }
+      // Please note that the convergence rates of various features are slightly different. In urban scences,
+      // the optimization is finished after the planar features converge.
+      if (planar_cost_diff < cost_threshold){
+          //ROS_INFO("The optimization has converged ahead of time");
+          break;
+      }
 
     planar_prev_cost = planar_cost;
     ground_prev_cost = ground_cost;

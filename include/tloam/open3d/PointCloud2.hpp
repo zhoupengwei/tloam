@@ -172,15 +172,16 @@ public:
     /// number of points in the pointcloud.
     std::shared_ptr<PointCloud2> RandomDownSample(double sampling_ratio) const;
 
-    /// \brief This is a new add function to select numbers points from input pointcloud2 into output pointcloud2
-    /// randomly.
+    /// \brief RandomDownSample applies a random sampling with uniform probability through random library by C++11.
+    /// Based off Algorithm A from the paper "Faster Methods for Random Sampling"
+    /// by Jeffrey Scott Vitter. The algorithm runs in O(N) and results as return
     ///
-    /// The sample is performed by randomly selecting the number of the points
-    /// in the pointcloud.
-    ///
-    /// \param numbers , the sum of sample points to total
-    /// number of points in the pointcloud.
-    std::shared_ptr<PointCloud2> RandomDownSample(size_t numbers, bool dummy) const;
+    /// References: http://www.ittc.ku.edu/~jsv/Papers/Vit84.sampling.pdf
+    /// https://github.com/PointCloudLibrary/pcl/blob/master/filters/include/pcl/filters/impl/random_sample.hpp
+    /// \author Pengwei Zhou
+    /// \param sample_num, the number of sample to total number of points in the pointcloud
+    /// \param dummy, it is a dummy parameter and only used to distinguish function overloading.
+    std::shared_ptr<PointCloud2> RandomDownSample(size_t sample_num, bool dummy) const;
 
     /// \brief Function to crop pointcloud2 into output pointcloud2
     ///

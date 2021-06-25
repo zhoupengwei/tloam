@@ -473,42 +473,43 @@ std::shared_ptr<PointCloud2> PointCloud2::RandomDownSample(double sampling_ratio
     return SelectByIndex(indices);
 }
 
-std::shared_ptr<PointCloud2> PointCloud2::RandomDownSample(size_t numbers, bool dummy) const {
-    if (numbers > this->points_.size()){
-        utility::LogError("the sample number of points less than the original cloud.");
-        return nullptr;
-    }
-    auto output_ptr = std::make_shared<PointCloud2>();
-    output_ptr->points_.resize(numbers);
-
-    if (HasNormals()){
-        output_ptr->normals_.resize(numbers);
-    }
-    if (HasColors()){
-        output_ptr->colors_.resize(numbers);
-    }
-    if (HasIntensity()){
-        output_ptr->intensity_.resize(numbers);
+std::shared_ptr<open3d::geometry::PointCloud2> PointCloud2::RandomDownSample(size_t sample_num, bool dummy) const {
+    if (sample_num > this->points_.size()){
+        utility::LogWarning("[RandomSample] find the sample number of points less than the original cloud. it will be disabled");
+        auto output_ptr = std::make_shared<PointCloud2>(*this);
+        return output_ptr;
     }
 
-    int size = static_cast<int>(points_.size());
-    for (size_t i = 0; i < numbers; i++){
-        int sample_id = utility::UniformRandInt(0, size);
-        output_ptr->points_[i] = points_[sample_id];
-        if (HasNormals()){
-            output_ptr->normals_[i] = normals_[sample_id];
-        }
-        if (HasIntensity()){
-            output_ptr->intensity_[i] = intensity_[sample_id];
-        }
-        if (HasColors()){
-            output_ptr->colors_[i] = colors_[sample_id];
-        }
+    // the generator will only be seeded once (per thread) since it's static
+    static thread_local std::mt19937 generator(std::random_device{}());
+    std::uniform_real_distribution<double> uniform_decimal(0.0, 1.0);  // [0.0, 1.0)
+    std::size_t i = 0;
+    std::size_t index = 0;
+    std::size_t N = this->points_.size();
+    std::size_t n = sample_num;
+    std::vector<size_t> raw_indexs(N, 0);
+    std::vector<size_t> reserve_indexs(sample_num, 0);
+    for (size_t k = 0; k < N; k++){
+        raw_indexs[k] = k;
     }
 
-    utility::LogDebug("Pointcloud random down sampled from {:d} points to {:d} points.",
-                      static_cast<int>(points_.size()), static_cast<int>(output_ptr->points_.size()));
-    return output_ptr;
+    while (n > 0){
+        // Step 1: [Generate. U.] Generate a random variate U that is uniformly distributed between 0 and 1 through random library
+        double U = uniform_decimal(generator);
+        // Step 2: [Test.] If N * U > n, go to step 4.
+        if (size_t((double)N*U) <= n){
+            // Step 3: [Select.] Select the next record in the file for the sample, and set n : = n - 1.
+            reserve_indexs[i++] = raw_indexs[index];
+            --n;
+        }
+        // Step 4: [Don't select.] Skip over the next record (do not include it in the sample).
+        // Set N : = N - 1.
+        --N;
+        ++index;
+        // If n > 0, then return to Step 1; otherwise, the sample is complete and the algorithm terminates.
+    }
+
+    return this->SelectByIndex(reserve_indexs);
 }
 
 

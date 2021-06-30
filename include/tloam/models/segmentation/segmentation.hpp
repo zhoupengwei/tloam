@@ -21,6 +21,8 @@
 // for Eigen
 #include <Eigen/Core>
 #include <Eigen/Dense>
+// for OpenCV
+#include <opencv2/opencv.hpp>
 // for ros
 #include <omp.h>
 #include <ros/ros.h>

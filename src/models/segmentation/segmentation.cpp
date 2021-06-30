@@ -519,16 +519,23 @@ bool Segmentation::fillSectionIndex(CloudData &cloud_in_) {
     y = cloud_in_.cloud_ptr->points_[i].y();
     r = std::sqrt(x*x + y*y);
 
-    theta = std::atan2(y, x) * 180.0 / M_PI;
+    theta = cv::fastAtan2(-y, x);
     s = getSection(r);
-    if (-145.0 <= theta && theta < -45.0){
-      regionIndex[3][s].emplace_back(i);
-    }else if (-45.0 <= theta && theta < 45.0){
+
+    if (theta >= 0.0 && theta < 90.0){
       regionIndex[0][s].emplace_back(i);
-    }else if (45.0 <= theta && theta <= 135.0){
+    }
+    else if (theta >= 90.0 && theta < 180.0){
       regionIndex[1][s].emplace_back(i);
-    }else{
+    }
+    else if (theta >= 180.0 && theta < 270.0){
       regionIndex[2][s].emplace_back(i);
+    }
+    else if (theta >= 270.0 && theta < 360.0){
+      regionIndex[3][s].emplace_back(i);
+    }
+    else{
+      ;
     }
   }
   return true;
@@ -634,7 +641,7 @@ bool Segmentation::segmentGroundThread(int q, const CloudData &cloud_in_, CloudD
     for (size_t k = 0, totalSize = regionCloud.cloud_ptr->points_.size(); k < totalSize; ++k){
       double r = regionCloud.cloud_ptr->points_[k].norm();
       double z = regionCloud.cloud_ptr->points_[k].z();
-      if (z >= -1.5 * sensorHeight && r >= sensorMinRange && r <= sensorMaxRange){
+      if (k % 10 == 0 && z >= -1.5 * sensorHeight && r >= sensorMinRange && r <= sensorMaxRange){
         point_info_.emplace_back(Eigen::Vector2d(z, static_cast<double>(k)));
       }
     }
@@ -665,42 +672,45 @@ bool Segmentation::segmentGroundThread(int q, const CloudData &cloud_in_, CloudD
 
       tempGround.reset();
       tempVertical.reset();
-      for (auto& info : point_info_){
-        auto id = static_cast<int>(info[1]);
-        Eigen::Vector4d pt(regionCloud.cloud_ptr->points_[id].x(),
-                           regionCloud.cloud_ptr->points_[id].y(),
-                           regionCloud.cloud_ptr->points_[id].z(), 1.0);
+      for (size_t i = 0, Size = regionCloud.cloud_ptr->points_.size(); i < Size; i++){
+        Eigen::Vector4d pt(regionCloud.cloud_ptr->points_[i].x(),
+                           regionCloud.cloud_ptr->points_[i].y(),
+                           regionCloud.cloud_ptr->points_[i].z(), 1.0);
+
         double dis = std::fabs(planeModel.dot(pt));
         if (dis < planeDis){
-          tempGround.cloud_ptr->points_.emplace_back(pt.block(0, 0, 3, 1));
-          if (iter == (maxIter - 1)){
-            // delete beam information
+          if (iter < (maxIter-1) && i % 5 == 0){
+            tempGround.cloud_ptr->points_.emplace_back(regionCloud.cloud_ptr->points_[i]);
+          }
+          else if (iter == (maxIter - 1)){
             if (regionCloud.cloud_ptr->HasIntensity()){
-              tempGround.cloud_ptr->intensity_.emplace_back(regionCloud.cloud_ptr->intensity_[id] -
-                static_cast<int>(regionCloud.cloud_ptr->intensity_[id]));
+              tempGround.cloud_ptr->intensity_.emplace_back(regionCloud.cloud_ptr->intensity_[i] -
+                                                            static_cast<int>(regionCloud.cloud_ptr->intensity_[i]));
             }
             if (regionCloud.cloud_ptr->HasNormals()){
-              tempGround.cloud_ptr->normals_.emplace_back(regionCloud.cloud_ptr->normals_[id]);
+               tempGround.cloud_ptr->normals_.emplace_back(regionCloud.cloud_ptr->normals_[i]);
             }
             if (regionCloud.cloud_ptr->HasColors()){
-              tempGround.cloud_ptr->colors_.emplace_back(regionCloud.cloud_ptr->colors_[id]);
+                tempGround.cloud_ptr->colors_.emplace_back(regionCloud.cloud_ptr->colors_[i]);
             }
           }
-        }else{
+        }
+        else{
           if (iter == (maxIter - 1)){
-            tempVertical.cloud_ptr->points_.emplace_back(regionCloud.cloud_ptr->points_[id]);
+            tempVertical.cloud_ptr->points_.emplace_back(regionCloud.cloud_ptr->points_[i]);
             if (regionCloud.cloud_ptr->HasIntensity()){
-              tempVertical.cloud_ptr->intensity_.emplace_back(regionCloud.cloud_ptr->intensity_[id]);
+              tempVertical.cloud_ptr->intensity_.emplace_back(regionCloud.cloud_ptr->intensity_[i]);
             }
             if (regionCloud.cloud_ptr->HasColors()){
-              tempVertical.cloud_ptr->colors_.emplace_back(regionCloud.cloud_ptr->colors_[id]);
+              tempVertical.cloud_ptr->colors_.emplace_back(regionCloud.cloud_ptr->colors_[i]);
             }
             if (regionCloud.cloud_ptr->HasNormals()){
-              tempVertical.cloud_ptr->normals_.emplace_back(regionCloud.cloud_ptr->normals_[id]);
+              tempVertical.cloud_ptr->normals_.emplace_back(regionCloud.cloud_ptr->normals_[i]);
             }
           }
         }
       }
+
     }
 
     // free memory

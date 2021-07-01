@@ -112,6 +112,7 @@ private:
   std::deque<FrameBuffer> submap_planar_buffer;
   std::deque<FrameBuffer> submap_ground_buffer;
 
+  ros::Time current_time;
   int num_threads_;
   double sensorPeriod{0.1};
   double ground_down_sample;

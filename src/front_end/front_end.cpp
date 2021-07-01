@@ -65,14 +65,13 @@ void FrontEnd::spinOnce() {
   if (!readData())
     return;
 
-  ros::Time current_time;
   while (hasData()){
     if (!validData())
       continue;
     if (updateLidarOdometry()){
 
       //std::cout << "successful update lidar odometry" << std::endl;
-      current_time = ros::Time::now();
+      //current_time = ros::Time::now();
       if (lidar_odom_ptr_->HasSubscribers()){
         lidar_odom_ptr_->Publish(lidar_odom_pose, current_time.toSec());
       }
@@ -138,6 +137,8 @@ bool FrontEnd::validData() {
     return false;
   }
 
+  current_time = ros::Time(current_general_data.time);
+
   ground_data_buff_.pop_front();
   edge_data_buff_.pop_front();
   general_data_buff_.pop_front();
@@ -148,6 +149,7 @@ bool FrontEnd::validData() {
 
 bool FrontEnd::setInitPose(const Eigen::Isometry3d& init_pose_) {
   this->init_pose = init_pose_;
+  return true;
 }
 
 bool FrontEnd::initRegistraton(std::shared_ptr<RegistrationInterface> &registration_ptr_,
@@ -275,7 +277,7 @@ void FrontEnd::updateSubmap() {
 
 bool FrontEnd::updateLidarOdometry() {
   static bool odometry_inited = false;
-  static int key_frame_index = 0;
+  //static int key_frame_index = 0;
   static Eigen::Isometry3d last_pose = init_pose;
   static Eigen::Isometry3d predicate_pose = init_pose;
 
@@ -317,7 +319,7 @@ bool FrontEnd::updateLidarOdometry() {
   Frame result_frame{};
   Timer timer;
   local_registration_ptr_->scanMatching(result_frame, predicate_pose, lidar_odom_pose);
-  ROS_INFO("Total optimization time: %d ms.", timer.elapsed());
+  ROS_INFO("Total optimization time: %ld ms.", timer.elapsed());
 
   //std::cout << "current robot pose: \n" << lidar_odom_pose.translation() << std::endl;
 

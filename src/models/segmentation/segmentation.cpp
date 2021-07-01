@@ -158,7 +158,7 @@ bool Segmentation::validData() {
     return false;
   }else{
     current_scan = cloud_data_buff_.front();
-    current_time = ros::Time::now();
+    current_time = ros::Time(current_scan.time);
     cloud_data_buff_.pop_front();
     bufferMutex.unlock();
 
@@ -236,7 +236,7 @@ int Segmentation::getSection(const double &radius) {
 }
 
 /**
- * @brief
+ * @brief Deprecated not used
  * @param cloud_in_, the point cloud to be estimated
  * @param cloud_out_, output the beams and collected time information of each point and stored in the intensity channel.
  * @return true if success otherwise false
@@ -302,7 +302,7 @@ bool Segmentation::estimateRingsAndTimes(CloudData &cloud_in_, CloudData &cloud_
     mean_height = mean_height / totalSize;
   }
 
-  double ori, startOri, endOri, totalOri, realTime, ring_time;
+  //double ori, startOri, endOri, totalOri, realTime, ring_time;
 
   cloud_out_.cloud_ptr->points_.reserve(totalSize);
   cloud_out_.cloud_ptr->intensity_.reserve(totalSize);
@@ -311,16 +311,16 @@ bool Segmentation::estimateRingsAndTimes(CloudData &cloud_in_, CloudData &cloud_
   non_ground_scan.cloud_ptr->intensity_.reserve(totalSize);
 
   Eigen::Vector3d startPoint, endPoint, curPoint;
-  int beam = 0;
+  //int beam = 0;
   for (size_t i = 0; i < totalSize; ++i){
     curPoint = raw_cloud->points_[i];
     int ringInfo = static_cast<int>(raw_cloud->intensity_[i]);
     if (curPoint.z() > mean_height){
       non_ground_scan.cloud_ptr->points_.emplace_back(curPoint);
-      non_ground_scan.cloud_ptr->intensity_.emplace_back(ring_time);
+      //non_ground_scan.cloud_ptr->intensity_.emplace_back(ring_time);
     }else{
       cloud_out_.cloud_ptr->points_.emplace_back(curPoint);
-      cloud_out_.cloud_ptr->intensity_.emplace_back(ring_time);
+      //cloud_out_.cloud_ptr->intensity_.emplace_back(ring_time);
     }
   }
   cloud_out_.cloud_ptr->points_.shrink_to_fit();
@@ -633,6 +633,7 @@ bool Segmentation::segmentGroundThread(int q, const CloudData &cloud_in_, CloudD
 
     std::vector<size_t> regionLocalIndex = regionIndex[q][s];
     regionCloud.cloud_ptr = cloud_in_.cloud_ptr->SelectByIndex(regionLocalIndex);
+    //std::cout << "q: " << q << " section: " << s << " , cloud_ptr have: " << regionCloud.cloud_ptr->points_.size() << std::endl;
 
     std::vector<size_t>().swap(regionLocalIndex);
 
@@ -667,6 +668,9 @@ bool Segmentation::segmentGroundThread(int q, const CloudData &cloud_in_, CloudD
 
     tempGround = std::move(groundSeed);
     for (int iter = 0; iter < maxIter; ++iter){
+      if (tempGround.cloud_ptr->points_.size() <= 3){
+        continue;
+      }
       Eigen::Vector4d planeModel = Eigen::Vector4d::Zero();
       findBestPlane(tempGround, planeModel);
 
@@ -683,6 +687,7 @@ bool Segmentation::segmentGroundThread(int q, const CloudData &cloud_in_, CloudD
             tempGround.cloud_ptr->points_.emplace_back(regionCloud.cloud_ptr->points_[i]);
           }
           else if (iter == (maxIter - 1)){
+            tempGround.cloud_ptr->points_.emplace_back(regionCloud.cloud_ptr->points_[i]);
             if (regionCloud.cloud_ptr->HasIntensity()){
               tempGround.cloud_ptr->intensity_.emplace_back(regionCloud.cloud_ptr->intensity_[i] -
                                                             static_cast<int>(regionCloud.cloud_ptr->intensity_[i]));
@@ -710,7 +715,6 @@ bool Segmentation::segmentGroundThread(int q, const CloudData &cloud_in_, CloudD
           }
         }
       }
-
     }
 
     // free memory

@@ -32,6 +32,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system filesystem thread serialization iostreams)
+find_package(Eigen3 REQUIRED QUIET)
 find_package(OpenCV REQUIRED QUIET)
 find_package(Ceres REQUIRED QUIET)
 find_package(Open3D REQUIRED QUIET)
@@ -59,9 +60,9 @@ catkin_package(
 
 include_directories(
   include
-  "/usr/include/eigen3"
   ${catkin_INCLUDE_DIRS}
   ${PROJECT_SOURCE_DIR}/src/
+  ${EIGEN3_INCLUDE_DIR}
   ${OpenCV_INCLUDE_DIRS}
   ${CERES_INCLUDE_DIRS}
   ${Open3D_INCLUDE_DIRS}

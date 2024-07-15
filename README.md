@@ -80,7 +80,7 @@ cmake [-G generator] [-DYAML_BUILD_SHARED_LIBS=ON] ..
 make 
 sudo make install
 ```
--[Open3D](http://www.open3d.org/)(A Modern Library for 3D Data Processing 0.12.0)
+-[Open3D](http://www.open3d.org/)(A Modern Library for 3D Data Processing 0.18.0)
 
 Please note that open3d installation will be a slightly troublesome process, please be patient. Another problem that needs attention is that Open3D-ML cannot be used in ROS at the same time due to the link [error2286](https://github.com/intel-isl/Open3D/issues/2286) and [error3432](https://github.com/intel-isl/Open3D/issues/3432). In order to fix this, you need to specify the cmake flag `-DGLIBCXX_USE_CXX11_ABI=ON`. However, the latest Tensorflow2.4 installed through conda(not pip) already supports the C++11 API, you can check the API with `print(tensorflow.__cxx11_abi_flag__)`. If the flag is true, you can set the compile flag `-DBUILD_TENSORFLOW_OPS=ON`  Next, you can complete the installation according to the [instructions](http://www.open3d.org/docs/release/compilation.html#)
 
@@ -112,6 +112,7 @@ If you have clone problems, you can download it directly from the link below.
 you can complete the installation according to the [guide](http://www.ceres-solver.org/installation.html)
 
 ## Installation 
+### Build from scratch
 Now create the Catkin Environment:
 ```bash
 mkdir -p ~/tloam_ws/src
@@ -126,7 +127,26 @@ cd src
 git clone https://github.com/zpw6106/tloam.git
 catkin build
 ```
- ## Usage
+
+### Use docker
+The installation of the dependencies and the build process of this project have been written into [a Dockerfile](./Dockerfile). 
+
+You can build the docker image by the following command,
+```bash
+docker build --tag loam:tloam --cpuset-cpus="0-8" .
+```
+`--tag` option is giving the image a name,  
+`--cpuset-cpus="0-8"` option is limit the CPU usage when building the image. It sometimes uses too much resources and make the server crash.  
+You may change the [build options](https://docs.docker.com/reference/cli/docker/image/build/) based on your situation. 
+
+Then you can run the container by
+```bash
+docker run -it --rm --memory="16g" --cpus="8" -v /path/to/data:/data loam:tloam
+```
+In the container, you have the TLOAM that is built under `/tloam_ws/`. 
+Your data is mapped to `/data` folder in the container. You should put the `sequence` folder under your `/path/to/data`.
+
+## Usage
 
 Download the [KITTI Odometry Dataset](http://www.cvlibs.net/datasets/kitti/eval_odometry.php) ([Graviti](https://gas.graviti.cn/dataset/hello-dataset/KITTIOdometry) can provide faster download speed in China), then organize it according to the following structure, and modify the read path in the config/kitti/kitti_reader.yaml
 
